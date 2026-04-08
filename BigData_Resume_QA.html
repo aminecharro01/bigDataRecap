@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big Data – L'Écosystème Hadoop | Récapitulatif & QCM</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0d14;
+    --surface: #111520;
+    --card: #161b28;
+    --accent: #f4a12e;
+    --accent2: #3de8c8;
+    --accent3: #e85d75;
+    --text: #e8ecf4;
+    --muted: #7a86a0;
+    --border: rgba(255,255,255,0.07);
+    --glow: rgba(244,161,46,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Lora', Georgia, serif;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: linear-gradient(135deg, #0d1220 0%, #131928 50%, #0a0f1c 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 40px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(244,161,46,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(61,232,200,0.06) 0%, transparent 50%);
+  }
+  header::after {
+    content: 'HADOOP';
+    position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(80px, 15vw, 180px);
+    font-weight: 800;
+    color: rgba(255,255,255,0.02);
+    letter-spacing: -5px;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .header-inner { max-width: 900px; margin: 0 auto; position: relative; }
+  .tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+  }
+  h1 span { color: var(--accent); }
+  .subtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* ─── NAV TABS ─── */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; gap: 0;
+  }
+  .tab-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none; border: none;
+    padding: 16px 28px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ─── LAYOUT ─── */
+  main { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ─── SECTION HEADERS ─── */
+  .section {
+    margin-bottom: 44px;
+    animation: fadeUp 0.4s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 20px 0 8px;
+  }
+  p { color: #c8d0de; margin-bottom: 12px; font-size: 15px; }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px 26px;
+    margin-bottom: 16px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(244,161,46,0.25); }
+  .card-accent { border-left: 3px solid var(--accent); }
+  .card-teal  { border-left: 3px solid var(--accent2); }
+  .card-red   { border-left: 3px solid var(--accent3); }
+
+  /* ─── GRID ─── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* ─── CODE INLINE ─── */
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    background: rgba(61,232,200,0.1);
+    color: var(--accent2);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  /* ─── TABLE ─── */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); background: rgba(244,161,46,0.06);
+    padding: 10px 14px; text-align: left;
+    border-bottom: 1px solid rgba(244,161,46,0.2);
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: #c8d0de; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ─── TIMELINE ─── */
+  .timeline { position: relative; padding-left: 24px; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 6px; top: 0; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+  .tl-item {
+    position: relative; margin-bottom: 18px;
+    padding: 14px 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute; left: -21px; top: 18px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .tl-year {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--accent); margin-bottom: 4px;
+  }
+  .tl-text { font-size: 14px; color: #c8d0de; }
+
+  /* ─── Q&A ─── */
+  .qa-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .qa-item:hover { border-color: rgba(244,161,46,0.2); }
+  .qa-q {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 18px 22px;
+    cursor: pointer;
+  }
+  .q-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--accent);
+    background: rgba(244,161,46,0.1);
+    padding: 3px 8px; border-radius: 3px;
+    white-space: nowrap; margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .q-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px; font-weight: 600;
+    color: var(--text); line-height: 1.4;
+    flex: 1;
+  }
+  .q-arrow {
+    color: var(--muted); font-size: 12px;
+    transition: transform 0.25s;
+    flex-shrink: 0; margin-top: 4px;
+  }
+  .qa-item.open .q-arrow { transform: rotate(180deg); color: var(--accent); }
+  .qa-a {
+    display: none;
+    padding: 0 22px 20px 22px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+  .qa-item.open .qa-a { display: block; }
+  .qa-a p { font-size: 14px; color: #b8c2d6; margin-bottom: 8px; }
+  .qa-a strong { color: var(--accent2); font-weight: 600; }
+  .qa-a code { font-size: 11px; }
+  .qa-a ul { padding-left: 18px; color: #b8c2d6; font-size: 14px; }
+  .qa-a li { margin-bottom: 5px; }
+
+  /* ─── BADGES ─── */
+  .badge {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 1px;
+    padding: 2px 8px; border-radius: 2px;
+    margin: 2px;
+  }
+  .badge-o { background: rgba(244,161,46,0.12); color: var(--accent); }
+  .badge-t { background: rgba(61,232,200,0.1); color: var(--accent2); }
+  .badge-r { background: rgba(232,93,117,0.1); color: var(--accent3); }
+
+  /* ─── FLOW DIAGRAM (ASCII-style) ─── */
+  .flow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    background: #0c101a;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    color: #7a9ab8;
+    line-height: 1.8;
+    overflow-x: auto;
+    margin: 14px 0;
+  }
+  .flow .hi { color: var(--accent2); }
+  .flow .lo { color: var(--accent); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 30px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="tag">Cours — Pr. N. El Faddouli · 2023</div>
+    <h1>L'Écosystème <span>Big Data</span><br>& Hadoop</h1>
+    <p class="subtitle">Récapitulatif complet · Pages 1–76 · Questions de cours avec réponses</p>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <button class="tab-btn active" onclick="showTab('resume',this)">📚 Récapitulatif</button>
+    <button class="tab-btn" onclick="showTab('qa',this)">❓ Questions / Réponses</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ════════════════════════════════════════════
+     TAB 1 : RÉCAPITULATIF
+════════════════════════════════════════════ -->
+<div id="resume" class="tab-content active">
+
+  <!-- 1. INTRODUCTION -->
+  <div class="section">
+    <div class="section-label">Partie 1</div>
+    <h2>Introduction — Pourquoi le calcul distribué ?</h2>
+    <p>La vitesse de lecture/écriture sur disque stagne (jusqu'à ~760 Mo/s en SATA, ~1 Go/s en SSD). Face à des volumétries massives, la lecture séquentielle sur un seul disque devient prohibitive.</p>
+    <div class="card card-accent">
+      <h3>Problème illustratif : lire 1 To</h3>
+      <table>
+        <tr><th>Disques</th><th>Durée estimée</th></tr>
+        <tr><td>1 disque</td><td>≈ 3,4 heures</td></tr>
+        <tr><td>10 disques</td><td>≈ 20 minutes</td></tr>
+        <tr><td>100 disques</td><td>≈ 2 minutes</td></tr>
+        <tr><td>1 000 disques</td><td>≈ 12 secondes</td></tr>
+      </table>
+      <p style="margin-top:10px"><strong>Solution :</strong> traitement parallèle — plusieurs ordinateurs coopèrent comme un super-ordinateur via passage de messages.</p>
+    </div>
+    <p>Les principaux défis du calcul distribué sont : hétérogénéité matérielle/OS, évolutivité, sécurité, concurrence, tolérance aux pannes et transparence.</p>
+  </div>
+
+  <!-- 2. HISTORIQUE HADOOP -->
+  <div class="section">
+    <div class="section-label">Partie 2</div>
+    <h2>Hadoop — Historique</h2>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-year">2004</div><div class="tl-text">Mike Cafarella & Doug Cutting (créateur de Lucene) écrivent Nutch, moteur de recherche distribué avec NDFS pour indexer >1 milliard de pages. Google publie MapReduce.</div></div>
+      <div class="tl-item"><div class="tl-year">2005</div><div class="tl-text">Implémentation de MapReduce dans Nutch. Tous les algorithmes Nutch tournent sur MapReduce + NDFS.</div></div>
+      <div class="tl-item"><div class="tl-year">2006</div><div class="tl-text">Hadoop naît comme projet indépendant, successeur de Nutch. Doug Cutting rejoint Yahoo! qui investit massivement. Premier cluster de 300 nœuds chez Yahoo!.</div></div>
+      <div class="tl-item"><div class="tl-year">2008</div><div class="tl-text">Yahoo! génère son index de recherche via un cluster Hadoop 900 nœuds. Hadoop devient Open Source.</div></div>
+      <div class="tl-item"><div class="tl-year">2009</div><div class="tl-text">Yahoo! traite 1 To en 62 secondes avec 1 460 nœuds. Doug Cutting rejoint Cloudera.</div></div>
+    </div>
+  </div>
+
+  <!-- 3. ÉCOSYSTÈME HADOOP -->
+  <div class="section">
+    <div class="section-label">Partie 3</div>
+    <h2>L'Écosystème Hadoop</h2>
+    <p>Hadoop est écrit en <strong>Java</strong>, sous licence <strong>Apache</strong>. Il repose sur deux piliers :</p>
+    <div class="grid-2">
+      <div class="card card-teal">
+        <h3>HDFS</h3>
+        <p>Hadoop Distributed File System — stockage distribué et répliqué sur le cluster.</p>
+      </div>
+      <div class="card card-teal">
+        <h3>MapReduce / YARN</h3>
+        <p>Framework de traitement distribué — exécution parallèle des jobs de calcul.</p>
+      </div>
+    </div>
+    <h3>Outils de l'écosystème</h3>
+    <table>
+      <tr><th>Outil</th><th>Rôle</th></tr>
+      <tr><td><strong>Pig</strong></td><td>Plateforme haut niveau, langage Pig Latin pour traitement de données</td></tr>
+      <tr><td><strong>Hive</strong></td><td>Environnement SQL-like (HiveQL) pour interroger les données HDFS</td></tr>
+      <tr><td><strong>HBase</strong></td><td>Base de données NoSQL orientée colonnes sur HDFS</td></tr>
+      <tr><td><strong>Sqoop</strong></td><td>Import/export entre HDFS et bases de données relationnelles</td></tr>
+      <tr><td><strong>Flume</strong></td><td>Collecte de logs et ingestion dans HDFS</td></tr>
+      <tr><td><strong>Mahout</strong></td><td>Bibliothèque de machine learning et mathématiques</td></tr>
+      <tr><td><strong>Oozie</strong></td><td>Ordonnanceur de jobs MapReduce (workflows)</td></tr>
+      <tr><td><strong>Ambari</strong></td><td>Gestion et monitoring de cluster</td></tr>
+      <tr><td><strong>ZooKeeper</strong></td><td>Service centralisé de configuration, nommage et synchronisation</td></tr>
+      <tr><td><strong>R Connectors</strong></td><td>Accès à HDFS et exécution de requêtes MR depuis le langage R</td></tr>
+    </table>
+  </div>
+
+  <!-- 4. HDFS -->
+  <div class="section">
+    <div class="section-label">Partie 4</div>
+    <h2>HDFS — Système de Fichiers Distribué</h2>
+    <div class="card card-accent">
+      <h3>Caractéristiques fondamentales</h3>
+      <p>HDFS est conçu pour stocker des fichiers <strong>très volumineux</strong> dans un cluster de machines peu coûteuses. Il suit le paradigme <strong>WORM</strong> (Write Once, Read Many Times).</p>
+      <p>Chaque fichier est découpé en <strong>blocs</strong> (128 Mo par défaut sur Hadoop 2.x ; 64 Mo sur Hadoop 1.x) répliqués sur plusieurs nœuds (facteur de réplication par défaut : <strong>3</strong>).</p>
+    </div>
+
+    <h3>Architecture Maître / Esclave</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h3>NameNode (Maître)</h3>
+        <p>Gère l'espace de noms et les <em>métadonnées</em> : arborescence, facteurs de réplication, propriétés. Stockées dans :</p>
+        <p><code>FsImage</code> — image persistante des métadonnées</p>
+        <p><code>EditLog</code> — journal de chaque modification</p>
+        <p>Régule l'accès aux fichiers par les clients.</p>
+      </div>
+      <div class="card">
+        <h3>DataNode (Esclave)</h3>
+        <p>Un DataNode par nœud physique. Gère le stockage (read/write) local.</p>
+        <p>Envoie un <strong>heartbeat</strong> au NameNode toutes les 3 s (défaut). Envoie un rapport de blocs toutes les 6 h (défaut).</p>
+        <p>Si un DataNode tombe, ses blocs sont automatiquement répliqués ailleurs.</p>
+      </div>
+    </div>
+
+    <div class="card card-red">
+      <h3>Secondary NameNode</h3>
+      <p>Ne remplace <strong>pas</strong> le NameNode en cas de panne. Il fusionne périodiquement le FsImage et l'EditLog pour éviter que ce dernier grossisse trop. Il s'exécute sur une machine distincte.</p>
+    </div>
+
+    <h3>Haute Disponibilité (HA) — Hadoop 2</h3>
+    <p>Paire de NameNodes Actif/Passif. En cas de panne du NameNode actif, le passif prend le relais sans interruption significative. Mécanisme :</p>
+    <div class="flow">
+<span class="lo">NameNode Actif</span> ──edits──▶ <span class="hi">JournalNodes (quorum, généralement 3)</span>
+                                    ▼
+<span class="lo">NameNode Passif</span> ◀── sync ───
+        │
+        ├── DataNodes envoient rapports de blocs aux DEUX NameNodes
+        │
+        └── <span class="hi">ZooKeeper</span> détecte la panne et initie le basculement
+    </div>
+
+    <h3>Réplication par rack</h3>
+    <p>Pour un facteur 3 : 1 copie sur un premier rack, 2 copies sur un second rack. Cela garantit la disponibilité même en cas de panne totale d'un rack.</p>
+
+    <h3>Lecture d'un fichier HDFS</h3>
+    <ol style="padding-left:20px; color:#c8d0de; font-size:15px; line-height:2">
+      <li>Le client appelle <code>open()</code> sur le FileSystem.</li>
+      <li>Appel RPC au NameNode → métadonnées des blocs (emplacements, taille, facteur réplication).</li>
+      <li>Le client contacte directement les DataNodes les plus proches (même nœud &gt; même rack &gt; autre rack).</li>
+      <li>Lecture en parallèle des blocs via <code>FSDataInputStream</code>.</li>
+      <li>Fermeture avec <code>close()</code>. Les blocs sont recombinés en fichier.</li>
+    </ol>
+
+    <h3>Écriture d'un fichier HDFS</h3>
+    <ol style="padding-left:20px; color:#c8d0de; font-size:15px; line-height:2">
+      <li>Client appelle <code>create()</code> → NameNode crée l'entrée dans FsImage.</li>
+      <li>Objet <code>FSDataOutputStream</code> → écriture via <code>write()</code>.</li>
+      <li><code>DFSOutputStream</code> découpe les données en paquets de 64 Ko → <em>DataQueue</em>.</li>
+      <li>DataStreamer demande allocation de blocs au NameNode.</li>
+      <li>Pipeline de DataNodes créé (ex. 3 nœuds pour réplication=3).</li>
+      <li>Paquets propagés le long du pipeline ; accusés de réception gérés via <em>Ack Queue</em>.</li>
+      <li>Fin : <code>close()</code> + notification finale au NameNode.</li>
+    </ol>
+
+    <h3>Modes de fonctionnement Hadoop</h3>
+    <div class="grid-2">
+      <div class="card"><strong>Local (standalone)</strong><br><p style="margin-top:6px">1 seule machine, 1 seule JVM. Filesystem hôte (ext3/ext4/xfs), pas HDFS.</p></div>
+      <div class="card"><strong>Pseudo-distribué</strong><br><p style="margin-top:6px">1 machine, mais chaque daemon dans sa propre JVM. HDFS activé.</p></div>
+    </div>
+    <div class="card card-teal" style="margin-top:12px"><strong>Totalement distribué</strong><br><p style="margin-top:6px">Mode de production réel. HDFS et daemons sur des machines différentes.</p></div>
+
+    <h3>Commandes HDFS utiles</h3>
+    <div class="flow">
+<span class="lo">$</span> hdfs dfs -ls /                        <span class="hi"># lister la racine</span>
+<span class="lo">$</span> hdfs dfs -mkdir /user/amine           <span class="hi"># créer un dossier</span>
+<span class="lo">$</span> hdfs dfs -put fichier.txt /user/amine  <span class="hi"># uploader</span>
+<span class="lo">$</span> hdfs dfs -get /user/amine/f.txt .      <span class="hi"># télécharger</span>
+<span class="lo">$</span> hdfs dfs -tail /user/amine/f.txt       <span class="hi"># dernières lignes</span>
+<span class="lo">$</span> hdfs fsck /user/amine -files -blocks -locations
+<span class="lo">$</span> hdfs dfs -df -h                        <span class="hi"># espace disponible</span>
+<span class="lo">$</span> hdfs getconf -confKey dfs.blocksize    <span class="hi"># taille bloc</span>
+    </div>
+
+    <h3>Types de blocs anormaux (commande fsck)</h3>
+    <table>
+      <tr><th>Type</th><th>Description</th></tr>
+      <tr><td>Over-replicated</td><td>Réplication dépasse le facteur cible (Hadoop corrige automatiquement)</td></tr>
+      <tr><td>Under-replicated</td><td>Pas assez de copies (Hadoop crée des répliques manquantes)</td></tr>
+      <tr><td>Misreplicated</td><td>Ne satisfait pas la politique de placement en rack</td></tr>
+      <tr><td>Corrupt blocks</td><td>Toutes les répliques sont corrompues</td></tr>
+      <tr><td>Missing replicas</td><td>Aucune réplique existante dans le cluster</td></tr>
+    </table>
+  </div>
+
+  <!-- 5. MAPREDUCE -->
+  <div class="section">
+    <div class="section-label">Partie 5</div>
+    <h2>MapReduce — Modèle de Traitement Distribué</h2>
+
+    <div class="card card-accent">
+      <h3>Principe de data locality</h3>
+      <p>Les données ne sont <strong>pas</strong> déplacées vers le programme. C'est le programme qui est distribué sur les nœuds contenant les données. Cela minimise les échanges réseau.</p>
+    </div>
+
+    <h3>Architecture MR1 (Hadoop 1) — Maître/Esclave</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h3>JobTracker (Maître unique)</h3>
+        <p>Reçoit les jobs, communique avec le NameNode pour localiser les données, attribue les tâches Map/Reduce aux TaskTrackers, surveille l'avancement et relance les tâches en échec. Ordonnancement par défaut : <strong>FIFO</strong>.</p>
+      </div>
+      <div class="card">
+        <h3>TaskTracker (Esclave)</h3>
+        <p>Exécute les tâches Map et Reduce. Possède des <em>slots</em> configurables. Envoie des heartbeats au JobTracker. Après 10 minutes sans heartbeat, considéré comme perdu.</p>
+      </div>
+    </div>
+
+    <h3>Les 4 phases d'un job MapReduce</h3>
+
+    <div class="card card-teal">
+      <strong>1. Phase MAP</strong>
+      <p>Chaque fichier est divisé en <em>Input Splits</em> (taille ≈ bloc HDFS). Une tâche Map traite un split. La classe <code>InputFormat</code> transforme les fichiers en splits ; <code>RecordReader</code> convertit les lignes en paires &lt;clé, valeur&gt;. La Map produit des paires &lt;clé, valeur&gt; intermédiaires.</p>
+    </div>
+    <div class="card">
+      <strong>2. Phase COMBINE (optionnel)</strong>
+      <p>Agrégation locale des résultats Map <em>avant</em> l'envoi réseau. Réduit le trafic réseau. Utilise généralement la même fonction que Reduce.</p>
+    </div>
+    <div class="card card-accent">
+      <strong>3. Phase SHUFFLE (réorganisation)</strong>
+      <p>Préprogrammée dans MapReduce. Les paires de même clé sont regroupées et envoyées au même nœud Reduce. Tri par clé avant la Reduce.</p>
+    </div>
+    <div class="card card-red">
+      <strong>4. Phase REDUCE</strong>
+      <p>Chaque Reducer traite toutes les valeurs d'une clé (tableau). Le résultat est écrit dans HDFS (répliqué). Nombre de tâches Reduce généralement inférieur au nombre de Maps.</p>
+    </div>
+
+    <h3>Exemple concret : comptage d'animaux</h3>
+    <p>Objectif : compter les félins (tigre, lion, panthère…) dans un fichier texte distribué en 2 blocs.</p>
+    <div class="flow">
+<span class="hi">-- MAP --</span>
+Input (Split 1):  Lion, Tiger, Lion, ...
+Output Map 1:     &lt;Lion,1&gt; &lt;Tiger,1&gt; &lt;Lion,1&gt; ...
+
+<span class="hi">-- COMBINE (local) --</span>
+&lt;Lion,2&gt; &lt;Tiger,1&gt; ...   <span class="lo">← trafic réseau réduit</span>
+
+<span class="hi">-- SHUFFLE --</span>
+Toutes les paires &lt;Lion,*&gt; → Nœud3
+Toutes les paires &lt;Tiger,*&gt; → Nœud1
+
+<span class="hi">-- REDUCE --</span>
+Nœud3: &lt;Lion, [2,1,3]&gt; → &lt;Lion, 6&gt;  → HDFS
+Nœud1: &lt;Tiger,[1,2]&gt;  → &lt;Tiger, 3&gt; → HDFS
+    </div>
+
+    <h3>Classes Java clés de MapReduce</h3>
+    <table>
+      <tr><th>Classe</th><th>Rôle</th></tr>
+      <tr><td><code>InputFormat</code></td><td>Divise les fichiers en splits (taille par défaut 128 Mo)</td></tr>
+      <tr><td><code>InputSplit</code></td><td>Représentation logique d'un split (chemin, début, fin, nœuds)</td></tr>
+      <tr><td><code>RecordReader</code></td><td>Convertit les lignes en paires &lt;clé, valeur&gt; (TextInputFormat par défaut)</td></tr>
+      <tr><td><code>Mapper</code></td><td>Classe de base à étendre pour implémenter la fonction Map</td></tr>
+      <tr><td><code>Reducer</code></td><td>Classe de base à étendre pour implémenter la fonction Reduce</td></tr>
+      <tr><td><code>Job</code></td><td>Configure et soumet un job MapReduce au JobTracker</td></tr>
+    </table>
+
+    <h3>Étapes d'exécution d'un job MR</h3>
+    <ol style="padding-left:20px; color:#c8d0de; font-size:14px; line-height:2.2">
+      <li>Programme envoie la demande via objet <code>Job</code> au <strong>JobClient</strong>.</li>
+      <li>JobClient demande un ID unique au JobTracker → dossier HDFS créé.</li>
+      <li>JobClient calcule les splits, copie le JAR (réplication=10 par défaut), la config XML et les splits dans le dossier HDFS.</li>
+      <li>JobTracker initialise le job, récupère les splits → nombre de tâches Map déterminé.</li>
+      <li>TaskTrackers signalent leur disponibilité via heartbeats → reçoivent les tâches.</li>
+      <li>TaskTrackers récupèrent le JAR depuis HDFS, lancent une nouvelle JVM enfant.</li>
+      <li>Résultats des tâches Map : écrits sur <strong>disque local</strong> du TaskTracker (pas HDFS).</li>
+      <li>Résultats des tâches Reduce : écrits dans <strong>HDFS</strong>.</li>
+    </ol>
+
+    <h3>Tolérance aux pannes dans MR1</h3>
+    <table>
+      <tr><th>Scénario</th><th>Comportement</th></tr>
+      <tr><td>Échec d'un TaskTracker pendant Map</td><td>Toutes ses tâches Map sont réattribuées (résultats perdus car sur disque local)</td></tr>
+      <tr><td>Échec d'un TaskTracker pendant Reduce</td><td>Seules les tâches Reduce en cours sont réexécutées</td></tr>
+      <tr><td>Pas de heartbeat depuis >10 min</td><td>TaskTracker déclaré perdu → tâches réattribuées</td></tr>
+    </table>
+
+    <h3>Limites de MapReduce 1 → Naissance de YARN</h3>
+    <div class="card card-red">
+      <p><strong>Évolutivité :</strong> goulots d'étranglement à ~4 000 nœuds / 40 000 tâches (JobTracker gère à la fois les jobs ET les ressources). YARN supporte jusqu'à <strong>10 000 nœuds / 100 000 tâches</strong>.</p>
+      <p><strong>Utilisation des ressources :</strong> MR1 sépare rigidement les slots Map et Reduce. YARN utilise des <em>conteneurs</em> flexibles pour tout type de tâche.</p>
+      <p><strong>Multi-tenancy :</strong> MR1 ne supporte que MapReduce. YARN supporte tout framework (Spark, Tez, etc.).</p>
+    </div>
+  </div>
+
+</div><!-- end resume tab -->
+
+
+<!-- ════════════════════════════════════════════
+     TAB 2 : QUESTIONS / RÉPONSES
+════════════════════════════════════════════ -->
+<div id="qa" class="tab-content">
+
+  <div class="section">
+    <div class="section-label">Révision complète</div>
+    <h2>Questions de cours — Cliquez pour révéler la réponse</h2>
+    <p style="margin-bottom:28px">Cliquez sur chaque question pour afficher la réponse détaillée.</p>
+
+    <!-- Q1 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q01</span>
+        <span class="q-text">Quel est le problème fondamental qui justifie l'utilisation du traitement distribué pour le Big Data ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>La vitesse de lecture/écriture des disques a peu progressé (≈ 80–760 Mo/s). Lire <strong>1 To sur un seul disque prend environ 3,4 heures</strong>. Sur 1 000 disques en parallèle, la même opération ne prend que 12 secondes.</p>
+        <p>La solution est le <strong>calcul distribué</strong> : plusieurs machines coopèrent pour traiter les données en parallèle, apparaissant comme un super-ordinateur unique grâce au passage de messages.</p>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q02</span>
+        <span class="q-text">Quel est l'historique de création de Hadoop et qui en sont les fondateurs ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>En <strong>2004</strong>, Mike Cafarella et <strong>Doug Cutting</strong> (créateur de Lucene) développent le moteur de recherche Nutch avec un système de fichiers distribué (NDFS) pour indexer plus d'un milliard de pages web. La même année, Google publie son papier sur MapReduce.</p>
+        <p>En <strong>2006</strong>, Hadoop devient un projet indépendant. Doug Cutting rejoint Yahoo! qui déploie un cluster de 300 nœuds. En 2008, l'index de recherche de Yahoo! est généré par un cluster Hadoop 900 nœuds, rendu Open Source. En 2009, Yahoo! traite 1 To en 62 secondes avec 1 460 nœuds. Doug Cutting rejoint ensuite Cloudera.</p>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q03</span>
+        <span class="q-text">Quels sont les deux composants de base d'Hadoop et leurs rôles respectifs ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <ul>
+          <li><strong>HDFS</strong> (Hadoop Distributed File System) : système de stockage distribué et répliqué. Il découpe les fichiers en blocs distribués sur les nœuds du cluster.</li>
+          <li><strong>MapReduce / YARN</strong> : framework de traitement distribué qui exécute des programmes en parallèle sur les nœuds contenant les données.</li>
+        </ul>
+        <p>Hadoop est écrit en <strong>Java</strong> et distribué sous licence <strong>Apache</strong>.</p>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q04</span>
+        <span class="q-text">Qu'est-ce que HDFS et quelles sont ses principales caractéristiques ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>HDFS est un système de fichiers conçu pour stocker des <strong>fichiers très volumineux</strong> dans un cluster de machines peu coûteuses. Caractéristiques clés :</p>
+        <ul>
+          <li><strong>WORM</strong> : Write Once Read Many — les données sont écrites une fois, lues de nombreuses fois (pour des analyses batch).</li>
+          <li><strong>Blocs</strong> : chaque fichier est découpé en blocs de <strong>128 Mo</strong> (Hadoop 2.x) ou 64 Mo (Hadoop 1.x).</li>
+          <li><strong>Réplication</strong> : chaque bloc est répliqué sur 3 nœuds par défaut, garantissant fiabilité et disponibilité.</li>
+          <li><strong>Réplication multi-rack</strong> : les copies sont distribuées sur au moins 2 racks différents.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q05</span>
+        <span class="q-text">Quel est le rôle du NameNode dans HDFS ? Quels fichiers utilise-t-il ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>Le NameNode est le <strong>maître</strong> de HDFS. Il gère :</p>
+        <ul>
+          <li>L'espace de noms : arborescence des fichiers et répertoires.</li>
+          <li>Les métadonnées : noms, facteurs de réplication, emplacements des blocs.</li>
+          <li>L'accès des clients aux fichiers (équilibrage de charge).</li>
+        </ul>
+        <p>Il utilise deux fichiers stockés sur disque local :</p>
+        <ul>
+          <li><strong><code>FsImage</code></strong> : image persistante des métadonnées, chargée en mémoire au démarrage.</li>
+          <li><strong><code>EditLog</code></strong> : journal de chaque modification (création de fichier, changement de réplication…).</li>
+        </ul>
+        <p>Les métadonnées sont conservées en mémoire pour un accès rapide (nécessite beaucoup de RAM).</p>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q06</span>
+        <span class="q-text">Quel est le rôle du DataNode et comment communique-t-il avec le NameNode ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>Le DataNode est l'<strong>esclave</strong> de HDFS. Un par nœud physique. Il :</p>
+        <ul>
+          <li>Gère le stockage physique des blocs (lecture/écriture).</li>
+          <li>Envoie un <strong>heartbeat</strong> au NameNode toutes les <strong>3 secondes</strong> (configurable via <code>dfs.heartbeat.interval</code>).</li>
+          <li>Envoie un <strong>rapport de blocs</strong> toutes les 6 heures (21 600 000 ms par défaut).</li>
+          <li>Si un DataNode tombe en panne, ses blocs sont répliqués sur d'autres nœuds. Timeout = 2×5min + 10×3s = <strong>630 secondes</strong> par défaut.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q07</span>
+        <span class="q-text">Qu'est-ce que le Secondary NameNode ? Remplace-t-il le NameNode en cas de panne ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p><strong>Non</strong>, le Secondary NameNode ne remplace pas le NameNode en cas de panne. Son vrai rôle est de <strong>fusionner périodiquement</strong> le FsImage et l'EditLog pour éviter que l'EditLog ne grossisse trop (opération coûteuse en CPU et RAM).</p>
+        <p>Le NameNode est un <strong>SPOF</strong> (Single Point of Failure) dans Hadoop 1. Pour pallier cela, Hadoop 2 introduit la <strong>Haute Disponibilité (HA)</strong> avec un pair de NameNodes Actif/Passif + JournalNodes + ZooKeeper.</p>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q08</span>
+        <span class="q-text">Comment fonctionne la Haute Disponibilité (HA) de HDFS dans Hadoop 2 ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>En mode HA, il y a un <strong>NameNode Actif</strong> et un <strong>NameNode Passif</strong> :</p>
+        <ul>
+          <li>Le NameNode actif envoie ses edits (logs) à un groupe de <strong>JournalNodes</strong> (généralement 3).</li>
+          <li>Le NameNode passif récupère ces edits et les applique à son FsImage pour rester synchronisé.</li>
+          <li>Les DataNodes envoient leurs rapports de blocs aux <strong>deux</strong> NameNodes.</li>
+          <li><strong>ZooKeeper</strong> détecte la panne du NameNode actif (interruption de session) et initie le basculement automatique vers le passif, sans interruption significative du service.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q09</span>
+        <span class="q-text">Décrivez les étapes de lecture d'un fichier dans HDFS.</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <ol style="padding-left:18px; font-size:14px; color:#b8c2d6; line-height:2">
+          <li>Le client appelle <code>open()</code> sur le FileSystem.</li>
+          <li>Appel RPC au NameNode → métadonnées (nombre de blocs, IDs, emplacements, facteur de réplication).</li>
+          <li>Le client contacte les DataNodes contenant les blocs (en priorisant : même nœud &gt; même rack &gt; autre rack).</li>
+          <li>Lecture parallèle des blocs via <code>FSDataInputStream</code> (<code>read()</code> répété).</li>
+          <li>À la fin d'un bloc, fermeture de connexion avec le DataNode et ouverture vers le suivant.</li>
+          <li>Appel de <code>close()</code>. Les blocs sont recombinés pour reconstituer le fichier.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q10</span>
+        <span class="q-text">Décrivez les étapes d'écriture d'un fichier dans HDFS.</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <ol style="padding-left:18px; font-size:14px; color:#b8c2d6; line-height:2">
+          <li>Client appelle <code>create()</code> → NameNode crée l'entrée dans FsImage (après vérification des droits et unicité du nom).</li>
+          <li><code>FSDataOutputStream</code> est retourné au client.</li>
+          <li><code>DFSOutputStream</code> découpe les données en paquets de <strong>64 Ko</strong> → placés dans la <em>DataQueue</em>.</li>
+          <li>DataStreamer demande des allocations de blocs au NameNode. Un <strong>pipeline</strong> de DataNodes est créé (ex. 3 pour réplication=3).</li>
+          <li>Paquets propagés le long du pipeline. Chaque DataNode stocke et transmet au suivant.</li>
+          <li><em>Ack Queue</em> : gestion des accusés de réception. Paquet supprimé de la queue quand tous les DataNodes ont confirmé.</li>
+          <li>Fin : <code>close()</code> → envoi des derniers paquets → notification finale au NameNode.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q11</span>
+        <span class="q-text">Quels sont les 3 modes de fonctionnement d'Hadoop ? Différences ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <ul>
+          <li><strong>Mode local (standalone)</strong> : tout sur 1 machine, 1 seule JVM. Utilise le filesystem hôte (pas HDFS). Pratique pour développement et tests.</li>
+          <li><strong>Mode pseudo-distribué</strong> : 1 machine, mais chaque daemon Hadoop dans sa propre JVM. HDFS activé. Simule un vrai cluster.</li>
+          <li><strong>Mode totalement distribué</strong> : mode de production. HDFS et daemons répartis sur plusieurs machines physiques distinctes.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q12</span>
+        <span class="q-text">Expliquez le principe de "data locality" dans MapReduce.</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>Dans MapReduce, <strong>ce sont les programmes qui voyagent vers les données</strong>, et non l'inverse. Chaque bloc de données est traité <em>localement</em> par un programme exécuté sur le nœud hébergeant ce bloc.</p>
+        <p>Cela minimise les échanges réseau, qui sont coûteux dans un cluster. Si les données ne sont pas disponibles localement, MapReduce les récupère depuis un nœud du même rack, puis en dernier recours d'un autre rack.</p>
+      </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q13</span>
+        <span class="q-text">Quelles sont les 4 phases d'un job MapReduce ? Laquelle est optionnelle ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <ul>
+          <li><strong>Map</strong> : chaque split est traité par une tâche Map qui produit des paires &lt;clé, valeur&gt; intermédiaires.</li>
+          <li><strong>Combine</strong> ⭐ <em>(optionnel)</em> : agrégation locale des résultats Map avant envoi réseau. Réduit le trafic.</li>
+          <li><strong>Shuffle</strong> : regroupement et tri des paires par clé. Les paires de même clé convergent vers le même Reducer.</li>
+          <li><strong>Reduce</strong> : agrégation finale par clé. Résultats écrits dans HDFS.</li>
+        </ul>
+        <p>La phase <strong>Combine</strong> est optionnelle. Les phases Shuffle et Reduce sont préprogrammées dans le framework.</p>
+      </div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q14</span>
+        <span class="q-text">Qu'est-ce qu'un Input Split dans MapReduce ? Différence avec un bloc HDFS ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>Un <strong>Input Split</strong> est une division <em>logique</em> d'un fichier. Il désigne une partie d'un fichier (début, fin) traitée par une seule tâche Map.</p>
+        <p>Un <strong>bloc HDFS</strong> est une division <em>physique</em> du fichier sur le disque (128 Mo par défaut).</p>
+        <p>Par défaut, la taille d'un split = taille d'un bloc. Mais un split peut chevaucher deux blocs (ex. un enregistrement commençant à la fin d'un bloc et se terminant au début du suivant). Dans ce cas, <code>RecordReader</code> récupère la partie manquante via le réseau.</p>
+      </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q15</span>
+        <span class="q-text">Quels sont les rôles du JobTracker dans MR1 ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>Le JobTracker cumule deux responsabilités dans MR1 :</p>
+        <ul>
+          <li><strong>Gestion des ressources</strong> : maintenir la liste des nœuds actifs, les slots Map/Reduce disponibles, affecter les tâches selon la politique d'ordonnancement (FIFO par défaut).</li>
+          <li><strong>Coordination des tâches</strong> : ordonner aux TaskTrackers de démarrer les tâches, surveiller leur exécution, relancer les tâches en échec, exécuter spéculativement les tâches lentes.</li>
+        </ul>
+        <p>C'est ce cumul de responsabilités qui crée les goulots d'étranglement de MR1 au-delà de 4 000 nœuds.</p>
+      </div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q16</span>
+        <span class="q-text">Comment MapReduce gère-t-il la tolérance aux pannes des TaskTrackers ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>Le mécanisme principal est le <strong>redémarrage des tâches</strong> :</p>
+        <ul>
+          <li>Si un TaskTracker n'envoie pas de heartbeat pendant <strong>10 minutes</strong> (par défaut), le JobTracker le considère comme perdu.</li>
+          <li><strong>Échec pendant Map</strong> : toutes ses tâches Map sont réattribuées à d'autres TaskTrackers (les résultats intermédiaires étant sur disque local, ils sont perdus).</li>
+          <li><strong>Échec pendant Reduce</strong> : seules les tâches Reduce <em>en cours</em> sont réexécutées (les tâches Reduce terminées sont dans HDFS, donc sauvegardées).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q17</span>
+        <span class="q-text">Quelles sont les 3 limites majeures de MapReduce 1 ? Comment YARN les résout-il ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <ul>
+          <li><strong>Évolutivité</strong> : MR1 plafonne à ~4 000 nœuds / 40 000 tâches. YARN (architecture ResourceManager/ApplicationMaster séparés) supporte jusqu'à <strong>10 000 nœuds / 100 000 tâches</strong>.</li>
+          <li><strong>Utilisation des ressources</strong> : MR1 sépare rigidement les slots Map et Reduce (sous-utilisation). YARN utilise des <strong>conteneurs flexibles</strong> pour tout type de tâche.</li>
+          <li><strong>Non multi-tenant</strong> : MR1 ne supporte que MapReduce. YARN supporte d'autres frameworks (Spark, Tez, etc.) — véritable OS du cluster.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q18</span>
+        <span class="q-text">À quoi servent les outils Pig et Hive dans l'écosystème Hadoop ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <ul>
+          <li><strong>Pig</strong> : plateforme de traitement haut niveau basée sur un langage de script appelé <strong>Pig Latin</strong>. Permet de décrire des traitements de données complexes sans écrire du code MapReduce Java.</li>
+          <li><strong>Hive</strong> : environnement de traitement haut niveau basé sur un langage proche de SQL appelé <strong>HiveQL</strong>. Permet d'interroger les données HDFS comme une base de données relationnelle. Traduit les requêtes SQL en jobs MapReduce.</li>
+        </ul>
+        <p>Les deux outils simplifient le développement pour des utilisateurs non développeurs Java.</p>
+      </div>
+    </div>
+
+    <!-- Q19 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q19</span>
+        <span class="q-text">Quel est le rôle de ZooKeeper dans l'écosystème Hadoop ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>ZooKeeper fournit un <strong>service centralisé</strong> pour :</p>
+        <ul>
+          <li><strong>Maintenir les informations de configuration</strong> partagées entre les nœuds.</li>
+          <li><strong>Nommage</strong> : annuaire des services du cluster.</li>
+          <li><strong>Synchronisation distribuée</strong> : coordination des nœuds.</li>
+        </ul>
+        <p>Dans le contexte de la HA HDFS, ZooKeeper a deux fonctions spécifiques :</p>
+        <ul>
+          <li>Détecter la panne du NameNode actif (interruption de la session ZooKeeper).</li>
+          <li>Initier le basculement vers le NameNode passif et élire le nouveau NameNode actif.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q20</span>
+        <span class="q-text">Qu'est-ce que Sqoop et Flume ? Quelle est la différence entre les deux ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <ul>
+          <li><strong>Sqoop</strong> : outil d'<strong>import/export</strong> de données entre HDFS et des bases de données relationnelles externes (MySQL, Oracle, etc.). Utilisé pour des transferts ponctuels ou planifiés en mode batch.</li>
+          <li><strong>Flume</strong> : outil de <strong>collecte de logs</strong> et d'ingestion en temps quasi-réel dans HDFS. Conçu pour des flux de données continus (logs de serveurs web, événements, etc.).</li>
+        </ul>
+        <p>En résumé : Sqoop = batch depuis des BDD ; Flume = streaming de logs.</p>
+      </div>
+    </div>
+
+    <!-- Q21 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q21</span>
+        <span class="q-text">Que signifie "over-replicated block" et comment Hadoop le gère-t-il ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>Un bloc <strong>over-replicated</strong> est un bloc dont le nombre de copies <strong>dépasse</strong> le facteur de réplication configuré pour le fichier auquel il appartient.</p>
+        <p>Ce n'est généralement pas un problème critique. HDFS le détecte et <strong>supprime automatiquement</strong> les copies en excès.</p>
+        <p>Cela peut survenir après une augmentation du nombre de DataNodes ou une modification manuelle du facteur de réplication à la baisse.</p>
+      </div>
+    </div>
+
+    <!-- Q22 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q22</span>
+        <span class="q-text">Quelles commandes HDFS permettent de vérifier les blocs d'un fichier ? Que montrent-elles ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>La commande principale est :</p>
+        <p><code>hdfs fsck /chemin/fichier -files -blocks -locations</code></p>
+        <p>Elle affiche :</p>
+        <ul>
+          <li>Le nombre de blocs du fichier.</li>
+          <li>L'identifiant et la taille de chaque bloc.</li>
+          <li>Les DataNodes hébergeant chaque bloc (localisation).</li>
+          <li>Le facteur de réplication effectif.</li>
+          <li>Les blocs éventuellement corrompus, sous-répliqués, sur-répliqués ou manquants.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q23 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q23</span>
+        <span class="q-text">Où les résultats intermédiaires des tâches Map sont-ils stockés ? Et les résultats finaux de Reduce ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <ul>
+          <li><strong>Résultats intermédiaires des tâches Map</strong> : stockés sur le <strong>disque local</strong> du TaskTracker (pas dans HDFS). C'est pourquoi, en cas de panne d'un TaskTracker pendant la phase Map, ses tâches doivent être entièrement réexécutées.</li>
+          <li><strong>Résultats finaux des tâches Reduce</strong> : écrits dans <strong>HDFS</strong> (donc répliqués et persistants). En cas de panne d'un TaskTracker pendant Reduce, seules les tâches en cours sont réexécutées.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q24 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q24</span>
+        <span class="q-text">Qu'est-ce que la classe RecordReader et quel problème résout-elle aux frontières des splits ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p><code>RecordReader</code> communique avec <code>InputSplit</code> pour convertir les lignes des fichiers en paires &lt;clé, valeur&gt;. Par défaut, il utilise <code>TextInputFormat</code>.</p>
+        <p><strong>Problème aux frontières</strong> : la fin d'un split ne coïncide pas toujours avec la fin d'un bloc physique. Un enregistrement peut commencer dans un bloc et se terminer dans le suivant. Dans ce cas, HDFS envoie la <strong>partie manquante de l'enregistrement via le réseau</strong> pour que le RecordReader puisse traiter l'enregistrement complet.</p>
+      </div>
+    </div>
+
+    <!-- Q25 -->
+    <div class="qa-item">
+      <div class="qa-q" onclick="toggleQA(this)">
+        <span class="q-num">Q25</span>
+        <span class="q-text">Quelles étapes sont nécessaires pour qu'un NameNode de remplacement soit opérationnel après une panne ?</span>
+        <span class="q-arrow">▼</span>
+      </div>
+      <div class="qa-a">
+        <p>Pour qu'un nouveau NameNode puisse répondre aux clients, il doit avoir accompli trois étapes :</p>
+        <ol style="padding-left:18px; font-size:14px; color:#b8c2d6; line-height:2">
+          <li><strong>Charger le FsImage</strong> dans sa mémoire RAM.</li>
+          <li><strong>Relire l'EditLog</strong> pour reconstituer l'état récent du système de fichiers.</li>
+          <li><strong>Recevoir suffisamment de rapports de blocs</strong> des DataNodes pour quitter le <em>Safe Mode</em>.</li>
+        </ol>
+        <p>Sur de grands clusters, ce démarrage à froid peut prendre <strong>30 minutes ou plus</strong>. C'est la raison d'être de la HA Hadoop 2 (basculement quasi-instantané).</p>
+      </div>
+    </div>
+
+  </div>
+</div><!-- end qa tab -->
+
+</main>
+
+<footer>
+  Pr. N. El Faddouli · L'Écosystème Big Data 2023 · Pages 1–76 · Récapitulatif généré automatiquement
+</footer>
+
+<script>
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(name).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function toggleQA(el) {
+    const item = el.parentElement;
+    item.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
